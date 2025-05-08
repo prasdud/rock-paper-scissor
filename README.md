@@ -3,8 +3,8 @@ The classic game of rock, paper and scissors. However to maintain authenticity o
 
 
 ## TO-DO
-1. Backend
-2. Frontend
+1. PendingGame.js and gameRoutes.js need to be heavily documented, i will not remember how it works next morning
+2. change HTTP response codes to better ones, right not its just 400 for error and 200 for success 
 3. Smart contract
 
 
