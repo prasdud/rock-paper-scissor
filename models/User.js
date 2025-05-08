@@ -1,9 +1,48 @@
 var express = require('express');
 var router = express.Router();
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const { type } = require('express/lib/response');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address']  // regex for valid email address
+  },
+
+  password: {
+    type: String,
+    required: true
+  }
+
+}, {timestamps: true});
+
+
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
-module.exports = router;
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+
+const User = mongoose.model('User', userSchema);
+module.exports = User;
