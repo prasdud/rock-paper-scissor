@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
-const { type } = require('express/lib/response');
 
 const pendingGameSchema = new mongoose.Schema({
-    // i know i should just name them player 1 and player 2, unlike the bible, goliath might win here
-
+    gameId: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    
     david: {
         type: String,
         required: true
@@ -16,19 +19,28 @@ const pendingGameSchema = new mongoose.Schema({
         required: true
     },
 
-    davidsMove: {
-        type: String,
-        required: true
-    },
+    rounds: [
+        {
+            davidsMove: {
+                type: String,
+                enum: ['rock', 'paper', 'scissors'],
+                required: true
+            },
+            goliathsMove: {
+                type: String,
+                enum: ['rock', 'paper', 'scissors'],
+                required: true
+            },
+            roundWinner: {
+                type: String,
+                required: true
+            }
+        }
+    ],
     
-    goliathsMove: {
-        type: String,
-        required: true
-    },
-
     winner: {
         type: String,
-        required: true
+        required: function() { return this.rounds.length === 3; } // Winner is required only when there are 3 rounds
     },
 
     isSyncedToChain: {
@@ -37,8 +49,6 @@ const pendingGameSchema = new mongoose.Schema({
         required: true
     }
 }, {timestamps: true});
-
-
 
 const PendingGame = mongoose.model('PendingGame', pendingGameSchema);
 module.exports = PendingGame;
