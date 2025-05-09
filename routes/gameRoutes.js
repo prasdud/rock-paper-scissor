@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const PendingGame = require('../models/PendingGame');
 
-// Decide the winner of the round
 const decideWinner = (p1Move, p2Move) => {
     if (p1Move === p2Move) return 'draw';
     if (
@@ -10,62 +9,59 @@ const decideWinner = (p1Move, p2Move) => {
         (p1Move === 'scissors' && p2Move === 'paper') ||
         (p1Move === 'paper' && p2Move === 'rock')
     ) {
-        return 'david';
+        return 'player1';
     } else {
-        return 'goliath';
+        return 'player2';
     }
 };
 
-// Main game logic route
+// core game logic
 router.post('/gameLogic', async (req, res) => {
-    const { gameId, david, goliath, davidsMove, goliathsMove } = req.body;
+    const { gameId, player1, player2, player1Move, player2Move } = req.body;
 
     try {
         let game = await PendingGame.findOne({ gameId });
 
         if (!game) {
-            // If no game exists, create a new one
+            // if no game exists, create a new one
             game = new PendingGame({
                 gameId,
-                david,
-                goliath,
+                player1,
+                player2,
                 rounds: [],
                 winner: null,
                 isSyncedToChain: false
             });
         }
 
-        // Decide the winner of the current round
-        const roundWinner = decideWinner(davidsMove, goliathsMove);
+        const roundWinner = decideWinner(player1Move, player2Move);
 
-        // Add the round result to the rounds array
         game.rounds.push({
-            davidsMove,
-            goliathsMove,
+            player1Move,
+            player2Move,
             roundWinner
         });
 
         // Check if 3 rounds have been played (best of 3 rounds)
         if (game.rounds.length === 3) {
-            const davidWins = game.rounds.filter(round => round.roundWinner === 'david').length;
-            const goliathWins = game.rounds.filter(round => round.roundWinner === 'goliath').length;
+            const player1Wins = game.rounds.filter(round => round.roundWinner === 'player1').length;
+            const player2Wins = game.rounds.filter(round => round.roundWinner === 'player2').length;
 
-            // Determine the overall winner of the game
-            if (davidWins > goliathWins) {
-                game.winner = 'david';
-            } else if (goliathWins > davidWins) {
-                game.winner = 'goliath';
+            // overall winner of the game
+            if (player1Wins > player2Wins) {
+                game.winner = 'player1';
+            } else if (player2Wins > player1Wins) {
+                game.winner = 'player2';
             } else {
-                game.winner = 'draw'; // This case shouldn't normally happen in a best-of-3
+                game.winner = 'draw'; // shouldn't normally happen in a best-of-3
             }
 
-            // Optionally, here you can set isSyncedToChain to true when syncing to the blockchain
+            // set isSyncedToChain to true when syncing to the blockchain
             // game.isSyncedToChain = true;
         }
 
         await game.save();
 
-        // Send the response with the current game state
         res.status(201).json({
             message: `Round submitted successfully. Current round winner: ${roundWinner}`,
             game: game

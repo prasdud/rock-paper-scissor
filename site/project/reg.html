@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+    <label for="Username">Name </label>
+      <input type="text" id="Username" placeholder="Enter your name " required />
+
+      <label for="emailId">Email ID</label>
+      <input type="text" id="emailId" placeholder="Enter Email ID" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter Password" required />
+
+      <div class="signup-link">
+        <p>already a user? <a href="login.html">Sign-in here</a></p>
+      </div>
+
+      <button type="submit">Login</button>
+      <p id="message"></p>
+    </form>
+
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const loginId = document.getElementById('loginId').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: loginId, password: password })
+      });
+
+      const result = await response.json();
+
+      const messageEl = document.getElementById('message');
+      if (response.ok) {
+        messageEl.style.color = 'green';
+        messageEl.textContent = result.message;
+      } else {
+        messageEl.style.color = 'red';
+        messageEl.textContent = result.message;
+      }
+    });
+
+    document.getElementById('forgotPassword').addEventListener('click', function () {
+      alert("Redirect to 'Reset Password' page or handle password recovery.");
+    });
+  </script>
+</body>
+</html>

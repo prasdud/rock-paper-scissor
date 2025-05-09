@@ -9,24 +9,24 @@ const pendingGameSchema = new mongoose.Schema({
         unique: true
     },
     
-    david: {
+    player1: {
         type: String,
         required: true
     },
 
-    goliath: {
+    player2: {
         type: String,
         required: true
     },
 
     rounds: [
         {
-            davidsMove: {
+            player1Move: {
                 type: String,
                 enum: ['rock', 'paper', 'scissors'],
                 required: true
             },
-            goliathsMove: {
+            player2Move: {
                 type: String,
                 enum: ['rock', 'paper', 'scissors'],
                 required: true

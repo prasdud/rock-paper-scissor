@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-cover bg-center bg-no-repeat px-6 py-10" style="background-image: url('image.png');">
+
+  <!-- Story Box -->
+  <div class="max-w-4xl mx-auto mb-10 p-6 bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-orange-200 animate-fade-in-down">
+    <h2 class="text-3xl font-bold text-orange-700 mb-2">Game Backstory</h2>
+    <p class="text-gray-800 leading-relaxed text-md">
+      In a world where memory and logic are your weapons, you must enter the Vault, survive the Play arena, and rise to the top of the Leaderboard.
+      Compete, outsmart, and become the legend in this high-stakes game of wit and reflexes.
+    </p>
+  </div>
+
+  <!-- Dashboard Section -->
+  <div class="text-center space-y-10">
+    <h1 class="text-4xl font-extrabold text-orange-800 animate-fade-in-down drop-shadow-lg">
+      Welcome to Your Dashboard
+    </h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-5xl mx-auto px-4">
+      <!-- Vault -->
+      <div onclick="navigateTo('vault')"
+           class="cursor-pointer bg-gradient-to-br from-orange-500 to-orange-600 text-white p-8 rounded-2xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out animate-fade-in-up hover:ring-4 hover:ring-orange-300">
+        <div class="text-5xl mb-3">🔐</div>
+        <div class="text-2xl font-semibold">Vault</div>
+        <p class="text-sm mt-1">Secure your progress</p>
+      </div>
+
+      <!-- Play -->
+      <div onclick="navigateTo('play')"
+           class="cursor-pointer bg-gradient-to-br from-orange-400 to-orange-500 text-white p-8 rounded-2xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out animate-fade-in-up delay-100 hover:ring-4 hover:ring-orange-200">
+        <div class="text-5xl mb-3">🎮</div>
+        <div class="text-2xl font-semibold">Play</div>
+        <p class="text-sm mt-1">Enter the arena</p>
+      </div>
+
+      <!-- Leaderboard -->
+      <div onclick="navigateTo('leaderboard')"
+           class="cursor-pointer bg-gradient-to-br from-orange-300 to-orange-400 text-white p-8 rounded-2xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out animate-fade-in-up delay-200 hover:ring-4 hover:ring-orange-100">
+        <div class="text-5xl mb-3">🏆</div>
+        <div class="text-2xl font-semibold">Leaderboard</div>
+        <p class="text-sm mt-1">Climb to the top</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Animations -->
+  <style>
+    @keyframes fade-in-down {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fade-in-up {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in-down {
+      animation: fade-in-down 0.6s ease-out both;
+    }
+
+    .animate-fade-in-up {
+      animation: fade-in-up 0.6s ease-out both;
+    }
+
+    .delay-100 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-200 {
+      animation-delay: 0.2s;
+    }
+  </style>
+
+  <!-- Navigation Logic -->
+  <script>
+    function navigateTo(page) {
+      alert(`Navigating to: ${page}`);
+      // window.location.href = `${page}.html`;
+    }
+  </script>
+
+</body>
+</html>

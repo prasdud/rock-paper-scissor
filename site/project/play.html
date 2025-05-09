@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Play</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center" style="background-image: url('image.png');">
+
+  <div class="text-center space-y-10">
+    <h1 class="text-4xl font-bold text-orange-700">Play</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+      <!-- Host Option -->
+      <div class="bg-orange-500 text-white p-6 rounded-xl shadow-lg hover:bg-orange-600 cursor-pointer transform hover:scale-105 transition duration-300"
+           onclick="hostGame()">
+        <div class="text-5xl mb-2">🧩</div>
+        <div class="text-xl font-semibold">Host</div>
+        <p class="mt-2 text-sm">Create a room</p>
+      </div>
+
+      <!-- Join Option -->
+      <div class="bg-orange-400 text-white p-6 rounded-xl shadow-lg hover:bg-orange-500 cursor-pointer transform hover:scale-105 transition duration-300"
+           onclick="toggleRoomInput()">
+        <div class="text-5xl mb-2">🔗</div>
+        <div class="text-xl font-semibold">Join</div>
+        <p class="mt-2 text-sm">Join with a room code</p>
+      </div>
+    </div>
+
+    <!-- Room Code Input (Initially Hidden) -->
+    <div id="roomInputSection" class="hidden space-y-4 mt-6">
+      <input type="text" id="roomCode" placeholder="Enter Room Code"
+             class="px-4 py-2 border rounded-md w-64 shadow focus:outline-none focus:ring-2 focus:ring-orange-500" />
+      <br />
+      <button onclick="joinGame()"
+              class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-6 rounded-xl shadow transition">
+        Join Room
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function toggleRoomInput() {
+      document.getElementById('roomInputSection').classList.remove('hidden');
+    }
+
+    function hostGame() {
+      alert("Hosting a new room...");
+      // Redirect or logic to create room
+    }
+
+    function joinGame() {
+      const code = document.getElementById('roomCode').value.trim();
+      if (code) {
+        alert(`Joining room with code: ${code}`);
+        // Add real navigation or API call here
+      } else {
+        alert("Please enter a room code.");
+      }
+    }
+  </script>
+</body>
+</html>
