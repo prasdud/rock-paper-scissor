@@ -1,4 +1,20 @@
 const PendingGame = require('../models/PendingGame');
+const hre = require("hardhat");
+const fs = require("fs");
+const path = require("path");
+
+// Get signers for hardhat
+const [owner, player1, player2] = await hre.ethers.getSigners();
+
+// Read contract address
+const contractAddressPath = path.join(__dirname, "../artifacts/contract-address.txt");
+const contractAddress = fs.readFileSync(contractAddressPath, "utf8").trim();
+
+// Get contract instance
+const SimpleStorage = await hre.ethers.getContractFactory("SimpleStorage");
+const contract = await SimpleStorage.attach(contractAddress);
+
+
 
 const decideWinner = (p1Move, p2Move) => {
     if (p1Move === p2Move) return 'draw';
@@ -12,6 +28,41 @@ const decideWinner = (p1Move, p2Move) => {
         return 'player2';
     }
 };
+
+/*
+*Need to integrate interact.js inside here so gameController directly writes the rounds to blockchain
+*need to replace all the files from rps-hardhat
+*/
+
+async function syncToChain(game) {
+    
+    console.log("Storing a game result...");
+    const storeTx = await contract.storeGameResult(
+        game.gameId,
+        game.player1,
+        game.player1,
+        game.rounds,
+        game.winner,
+        game.isSyncedToChain = true,
+        //game.p1Move,
+        //game.p2Move,
+    );
+
+
+
+    //maybe redundant??
+    if (game.isSyncedToChain == true) {
+        console.log("Game synced to blockchain...");
+        return true
+    }
+
+    if (game.isSyncedToChain == false) {
+        console.log("Game NOT SYNCED to blockchain...");
+        return false
+    }
+}
+
+
 // core game logic
 /**
  * right now game logic does work, but it keeps writing to the same gameID after 3 rounds, need to 
@@ -54,6 +105,7 @@ exports.handleGameLogic = async (req, res) => {
                 game.winner = 'draw';
             }
 
+            syncToChain(game);
             // Later: game.isSyncedToChain = true;
         }
 
@@ -67,3 +119,4 @@ exports.handleGameLogic = async (req, res) => {
         res.status(500).json({ message: "Server Error", error: error.message });
     }
 };
+
