@@ -4,10 +4,10 @@ pragma solidity ^0.8.0;
 contract SimpleStorage {
     // Struct to store game data
     struct GameResult {
+        string gameId;
         address player1;
         address player2;
-        string move1;
-        string move2;
+        string[] rounds;
         string winner;
         uint256 timestamp;
     }
@@ -20,8 +20,7 @@ contract SimpleStorage {
         uint256 indexed gameId, 
         address player1, 
         address player2, 
-        string move1, 
-        string move2, 
+        string[] rounds,  
         string winner
     );
 

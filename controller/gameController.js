@@ -40,7 +40,7 @@ async function syncToChain(game) {
     const storeTx = await contract.storeGameResult(
         game.gameId,
         game.player1,
-        game.player1,
+        game.player2,
         game.rounds,
         game.winner,
         game.isSyncedToChain = true,
