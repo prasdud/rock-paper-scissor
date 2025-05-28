@@ -10,3 +10,6 @@ The classic game of rock, paper and scissors. However to maintain authenticity o
 
 1. Set GITignore before sensitive pass keys
 2. add requirements file
+
+## Execution (Demo Build)
+1. Start Mongo server >$sudo service mongod start
