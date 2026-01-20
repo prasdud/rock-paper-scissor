@@ -1,6 +1,8 @@
 # Rock Paper Scissor Game with Blockchain Driven Security
 The classic game of rock, paper and scissors. However to maintain authenticity of game moves and game winners we will integrate blockchain.
 
+# Status, Dev Notes
+Deprecated, not actively working on it. Just a cool demo.
 
 ## TO-DO
 1. PendingGame.js and gameRoutes.js need to be heavily documented, i will not remember how it works next morning
